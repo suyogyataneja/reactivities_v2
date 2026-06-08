@@ -1,3 +1,5 @@
+using Application.Activities.Queries;
+using Application.Core;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -11,8 +13,17 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors();
+
+builder.Services.AddMediatR(x=> x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+
+builder.Services.AddAutoMapper(cfg => {}, typeof(MappingProfiles).Assembly);
 
 var app = builder.Build();
+
+ app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().
+     WithOrigins("http://localhost:3000","https://localhost:3000"));
+
 
 // Configure the HTTP request pipeline.- This is where we add middlewares to the pipeline.
 // The order of middlewares is important. They are executed in the order they are added.
