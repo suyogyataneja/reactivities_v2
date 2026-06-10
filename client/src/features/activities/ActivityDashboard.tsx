@@ -1,29 +1,30 @@
-import { List, ListItem, ListItemText } from "@mui/material";
-import axios from "axios";
-import {  useEffect, useState } from "react";
+import { Grid2, List, ListItem, ListItemText } from "@mui/material";
 
-export default function ActivityDashboard(){
+type Props={
 
-    const[activities,setActivities]= useState<Activity[]>([]);
+    activitiesDashboard:Activity[]
+}
 
-    useEffect(() =>{
-        axios.get('https://localhost:5001/api/activities')
-        .then(response => setActivities(response.data))
+export default function ActivityDashboard(props:Props){
 
-        return () =>{}
-    },[])
 
     return (
+        <Grid2 container>
+            <Grid2 size={9}>
+                  <List>
+                        {props.activitiesDashboard.map((activity)=>(
+                        <ListItem key={activity.id}>
+                        
+                        <ListItemText>{activity.title}</ListItemText>
 
-        <List>
-        {activities.map((activity)=>(
-        <ListItem key={activity.id}>
-        
-        <ListItemText>{activity.title}</ListItemText>
+                        </ListItem>
 
-        </ListItem>
+                        ))}
+                    </List>
 
-        ))}
-    </List>
+            </Grid2>
+
+        </Grid2>
+      
     )
 }
