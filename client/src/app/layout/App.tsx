@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import './App.css'
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
 import axios from 'axios';
 
