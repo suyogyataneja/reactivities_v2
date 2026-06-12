@@ -5,3 +5,5 @@ The repo has following projects:
 2. Application
 3. Domain
 4. Persistence
+
+Database used is SQL
