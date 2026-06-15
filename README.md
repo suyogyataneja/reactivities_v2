@@ -6,4 +6,3 @@ The repo has following projects:
 3. Domain
 4. Persistence
 
-Database used is SQL
