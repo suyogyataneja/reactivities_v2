@@ -22,7 +22,7 @@ builder.Services.AddAutoMapper(cfg => {}, typeof(MappingProfiles).Assembly);
 var app = builder.Build();
 
  app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().
-     WithOrigins("http://localhost:3000","https://localhost:3000"));
+     WithOrigins("http://localhost:3000","https://localhost:3000","https://localhost:3001"));
 
 
 // Configure the HTTP request pipeline.- This is where we add middlewares to the pipeline.
