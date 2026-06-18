@@ -6,3 +6,4 @@ The repo has following projects:
 3. Domain
 4. Persistence
 
+React front end code.
