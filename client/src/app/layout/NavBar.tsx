@@ -1,7 +1,11 @@
 import { Group } from "@mui/icons-material";
 import { AppBar, Box, Button, Container, MenuItem, Toolbar, Typography } from "@mui/material";
 
-export default function NavBar()
+type Props={
+  onCreateActivity : () => void
+}
+
+export default function NavBar({onCreateActivity}:Props)
 {
 
     return(
@@ -34,7 +38,7 @@ export default function NavBar()
 
                 </Box>
 
-                <Button size="large" variant="contained" color="warning">Create Activity</Button>
+                <Button size="large" variant="contained" color="warning" onClick={onCreateActivity}>Create Activity</Button>
 
              </Toolbar>
 
