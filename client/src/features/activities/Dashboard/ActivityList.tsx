@@ -1,22 +1,20 @@
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import { ActivityCard } from "./ActivityCard"
+import { useActivities } from "../../../lib/hooks/useActivities"
 
-type Props ={
-    activitiesActivityList: Activity[]
-    onViewActivity:(id:string) => void
-    // onDeleteActivity:(id:string)=>void
-}
 
-export default function ActivityList({activitiesActivityList, onViewActivity}:Props){
+export default function ActivityList(){
+    const{activities, isPending}= useActivities();
 
+    if(!activities || isPending) return <Typography>Loading....</Typography>
     return(
    <Box sx={{display:'flex', flexDirection:'column', gap:3}}>
-        {activitiesActivityList.map(
+        {activities.map(
             activity =>(
                 < ActivityCard 
                 key={activity.id}
                 activityActivityCard={activity}
-                onView={onViewActivity}
+                // onView={onViewActivity}
                 // onDelete={onDeleteActivity}  
                   />
             )
