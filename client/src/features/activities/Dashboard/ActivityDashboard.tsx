@@ -2,6 +2,7 @@ import { Grid2 } from "@mui/material";
 import ActivityList from "./ActivityList";
 import ActivityDetail from "../Details/ActivityDetail";
 import ActivityForm from "../form/ActivityForm";
+import { useActivities } from "../../../lib/hooks/useActivities";
 
 type Props={
 
@@ -12,13 +13,14 @@ type Props={
     onCloseForm:()=>void
     edit:boolean
     onHandleOpenForm:(id?:string) => void
-    onSubmit:(activity :Activity) => void
+    // onSubmit:(activity :Activity) => void
     deleteActivity: (id:string) => void
 }
 
 export default function ActivityDashboard({activitiesDashboard,
-     onSelectActivity, activity,cancelSelectActivity,onCloseForm,edit,onHandleOpenForm,onSubmit,deleteActivity}:Props){
-
+     onSelectActivity, activity,cancelSelectActivity,onCloseForm,edit,onHandleOpenForm}:Props){
+    
+     const{deleteActivity}= useActivities();
 
     return (
         <Grid2 container spacing={3}>
@@ -26,18 +28,21 @@ export default function ActivityDashboard({activitiesDashboard,
             <ActivityList 
             activitiesActivityList={activitiesDashboard} 
              onViewActivity={onSelectActivity}
-             onDeleteActivity={deleteActivity}/>
+            //  onDeleteActivity={deleteActivity}
+             />
 
             </Grid2>
 
             <Grid2 size={5}>
               
               {activity && !edit && <ActivityDetail
-               activityActivityDetail={activity}
+               selectedActivity={activity}
                 onCancel ={cancelSelectActivity}
                 openForm={onHandleOpenForm}
                />}
-                {edit && <ActivityForm handleCloseForm={onCloseForm} activityForm={activity}  onSubmitActivity={onSubmit}/>}
+                {edit && <ActivityForm handleCloseForm={onCloseForm} activityForm={activity}
+                //   onSubmitActivity={onSubmit}
+                  />}
             </Grid2>
 
         </Grid2>
