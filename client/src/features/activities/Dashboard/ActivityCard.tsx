@@ -1,16 +1,18 @@
 import { Box, Button, Card, CardActions, Chip, Typography } from "@mui/material"
+import { useActivities } from "../../../lib/hooks/useActivities"
 
 type Props={
 
     activityActivityCard:Activity
     onView :(id:string)=>void
-    onDelete:(id:string)=> void
+    // onDelete:(id:string)=> void
 }
 
 
 
-export function ActivityCard({activityActivityCard, onView,onDelete}:Props){
+export function ActivityCard({activityActivityCard, onView}:Props){
 
+    const {deleteActivity} = useActivities();
 
     function getActivityDetails(){
         // console.log(activityActivityCard.id)
@@ -32,7 +34,11 @@ export function ActivityCard({activityActivityCard, onView,onDelete}:Props){
                 <Button size="medium" variant="contained" onClick={getActivityDetails} color="primary">
                     View
                 </Button>
-                <Button size="medium" variant="contained" onClick={ () => onDelete(activityActivityCard.id) } color="error">
+                <Button size="medium" variant="contained" 
+                onClick={ () => deleteActivity.mutate(activityActivityCard.id) }
+                color="error"
+                disabled={deleteActivity.isPending}
+                >
                     Delete
                 </Button>
                 </Box>

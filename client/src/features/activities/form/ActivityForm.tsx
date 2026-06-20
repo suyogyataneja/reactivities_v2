@@ -3,15 +3,18 @@ import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { useState, type ChangeEvent } from "react"
+import { useActivities } from "../../../lib/hooks/useActivities"
 
 type Props ={
     
     handleCloseForm:()=>void
     activityForm?: Activity
-    onSubmitActivity: (activity:Activity) => void   
+    // onSubmitActivity: (activity:Activity) => void   
 }
 
-function ActivityForm({handleCloseForm,activityForm, onSubmitActivity}:Props) {
+function ActivityForm({handleCloseForm,activityForm}:Props) {
+    
+    const { updateActivity, createActivity} = useActivities();
 
     const[values,setValues] = useState({
         title: activityForm?.title || '',
@@ -26,9 +29,19 @@ function ActivityForm({handleCloseForm,activityForm, onSubmitActivity}:Props) {
         setValues({...values,[e.target.name]:e.target.value});
     }
 
-    function handleSubmit(){
-        const updatedActivity ={...activityForm, ...values} as Activity;
-        onSubmitActivity(updatedActivity)
+    async function handleSubmit(){
+        if(activityForm){
+            const updatedActivity ={...activityForm, ...values} as Activity;
+            await updateActivity.mutateAsync(updatedActivity);
+           
+            // onSubmitActivity(updatedActivity)
+        }
+        else{
+            await createActivity.mutateAsync(values as Activity);
+        }
+
+        handleCloseForm();
+      
     }
 
 
@@ -47,7 +60,14 @@ function ActivityForm({handleCloseForm,activityForm, onSubmitActivity}:Props) {
             <TextField label='Venue' name='venue' value={values.venue}  onChange={handleChange}/>
             <Box display='flex' justifyContent='end' gap={3}>
                 <Button color='inherit' onClick={handleCloseForm}>Cancel</Button>
-                <Button color='success' onClick={handleSubmit} variant="contained">Submit</Button>
+                <Button 
+                color='success'
+                onClick={handleSubmit}
+                variant="contained"
+                disabled={updateActivity.isPending || createActivity.isPending} 
+                >
+                    Submit
+                    </Button>
             </Box>
         </Box>  
     </Paper>
