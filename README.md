@@ -149,3 +149,5 @@ React front end code.
   │ UI state (editMode,                  │ useState                    │ Still useState (unchanged)             │
   │ selectedActivity)                    │                             │                                        │
   └──────────────────────────────────────┴─────────────────────────────┴────────────────────────────────────────┘
+
+  Using Mobx for client site state management
