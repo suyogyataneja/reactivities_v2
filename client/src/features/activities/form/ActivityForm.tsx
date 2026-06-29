@@ -4,17 +4,14 @@ import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import { useState, type ChangeEvent } from "react"
 import { useActivities } from "../../../lib/hooks/useActivities"
+import { useNavigate, useParams } from "react-router"
 
-type Props ={
-    
-    handleCloseForm:()=>void
-    activityForm?: Activity
-    // onSubmitActivity: (activity:Activity) => void   
-}
 
-function ActivityForm({handleCloseForm,activityForm}:Props) {
-    
-    const { updateActivity, createActivity} = useActivities();
+function ActivityForm() {
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { updateActivity, createActivity, activity: activityForm, isLoadingActivity } = useActivities(id);
 
     const[values,setValues] = useState({
         title: activityForm?.title || '',
@@ -33,24 +30,23 @@ function ActivityForm({handleCloseForm,activityForm}:Props) {
         if(activityForm){
             const updatedActivity ={...activityForm, ...values} as Activity;
             await updateActivity.mutateAsync(updatedActivity);
-           
-            // onSubmitActivity(updatedActivity)
+            navigate(`/activities/${activityForm.id}`);
         }
         else{
-            await createActivity.mutateAsync(values as Activity);
+            createActivity.mutate(values as Activity, {
+                onSuccess: (id) => navigate(`/activities/${id}`)
+            });
         }
-
-        handleCloseForm();
-      
     }
 
+    if (id && isLoadingActivity) return <Typography>Loading...</Typography>
 
   return (
     <Paper sx={{borderRadius:3, padding:3}}>
         <Typography variant="h5" gutterBottom color="primary">
-            Create activity
+            {activityForm ? 'Edit activity' : 'Create activity'}
         </Typography>
-        
+
         <Box component='form' display='flex' flexDirection='column' gap={3}>
             <TextField label='Title' name='title' value={values.title} onChange={handleChange}/>
             <TextField label='Description' name='description' value={values.description}  onChange={handleChange} multiline rows={3}/>
@@ -59,17 +55,17 @@ function ActivityForm({handleCloseForm,activityForm}:Props) {
             <TextField label='City' name='city' value={values.city}  onChange={handleChange}/>
             <TextField label='Venue' name='venue' value={values.venue}  onChange={handleChange}/>
             <Box display='flex' justifyContent='end' gap={3}>
-                <Button color='inherit' onClick={handleCloseForm}>Cancel</Button>
-                <Button 
+                <Button color='inherit' onClick={() => navigate(-1)}>Cancel</Button>
+                <Button
                 color='success'
                 onClick={handleSubmit}
                 variant="contained"
-                disabled={updateActivity.isPending || createActivity.isPending} 
+                disabled={updateActivity.isPending || createActivity.isPending}
                 >
                     Submit
                     </Button>
             </Box>
-        </Box>  
+        </Box>
     </Paper>
 )
 }
